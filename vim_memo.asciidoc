@@ -1,0 +1,409 @@
+Vim Plugin
+==========
+Junichi Kobayashi <junichi.kobayashi@pioneer.onkyo.com>
+:Author Initials:
+:toc:
+:icons:
+:numbered:
+:website: http://asciidoc.org/
+
+便利なもの
+
+== プラグイン管理
+*'Shougo/Neobundle'*::
+これがないと、インストール大変。
+
+*'Shougo/vimproc.vim'*::
+vimprocは非同期処理のプラグインで、あらかじめコンパイルしておく必要がある。
++
+bundle内のvimproc.vimフォルダに入り、makeを実行
++
+cygwinの場合は以下のとおり
+
+----
+$ make -f make_cygwin.mak
+----
+
+== 入力補助系
+*'Shougo/neosnippet.vim'*::
+*'Shougo/neosnippet-snippets'*::
+*'Shougo/neocomplcache'*::
+neocomplcacheは、自動補完機能のプラグイン
++
+起動時有効にしたいなら、下記記述をvimrcに追記
++
+----
+let g:neocomplcache_enable_at_startup = 1
+----
++
+neosnippetは登録した構文を呼び出せる(if文, for文など。)
++
+neosnippet-snippetsは、構文のセット
++
+neocomplcacheと組み合わせると自動補完リストに、構文も候補として出てくるようになる
++
+neosnippetの設定例は以下のとおり。
++
+(以下の設定だと、候補選択中にTABを押すと、C-Y(次候補選択)と同じ動作となる。これはVisualStudioでの補完と同じような動作)
++
+----
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+" SuperTab like snippets behavior.
+imap <expr><TAB> neosnippet#expandable() <Bar><bar> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable() <Bar><bar> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+" For snippet_complete marker.
+if has('conceal')
+	set conceallevel=2 concealcursor=i
+endif
+----
+
+*'bronson/vim-trailing-whitespace'*::
+行末の不要なスペースが色づけされて表示される
+:FixWhitespaceと入力すると、削除できる
+
+[TIP]
+========
+unite等のウィンドウ表示で空白が色づけされてうっとおしい場合は、
+下記の設定を_vimrcに記載しておく。
+
+----
+let g:extra_whitespace_ignored_filetypes = ['unite']
+----
+
+========
+
+*'tpope/vim-surround'*::
+範囲選択し、SHIFT+s押し、囲みたい記号()や''や""などを押すと、それで選択範囲が囲まれる
+どうやらyss'とすると、シングルクォートで、
+yss"とすると、ダブルクォートで囲めるみたい。
+(の場合、)キーで囲むと空白なしで囲める
+
+*'kana/vim-smartinput'*::
+括弧を入力すると、自動で閉じ括弧が入力される
+
+*'Townk/vim-autoclose'*::
+*'kana/vim-smartchr'*::
+なんだったか
+
+== ファイル検索系
+
+*'ctrlpvim/ctrlp.vim'*::
+Ctrl+pというキー操作で、バッファ一覧、最近開いたファイル、カレントディレクトリ以下からののファイルを検索できる。めちゃくちゃ便利。
+ただ、ファイルが多いディレクトリでは時間が検索に時間がかかるので、
+キャッシュを消去しない、という設定にしておくこと  
+
+*'scrooloose/nerdtree'*::
+ファイルエクスプローラー。ブックマークが便利
+ブックマーク設定、解除は以下のコマンド
++
+----
+:Bookmark
+:ClearBookmark
+----
++
+cdとタイプすると、カレントディレクトリ変更
+
+*'vim-scripts/taglist.vim'*::
+エディタでよくある、ソース内の関数、変数、マクロ定義の一覧が見れるやつ。
+
+*'othree/eregex.vim'*::
+Perl互換、という正規表現を使えるようになる。ただし置換コマンドは%Sとすること。
+vimの正規表現との使い分けができるから、とりあえずいれときゃいい。
+
+*'Shougo/unite.vim'*::
+sourceという概念があり、それはいわゆる機能に相当し、
+そのの実行結果が別ウィンドウで表示されるが、
+そこからジャンプしたり、新規タブで開いたり、絞り込んだり、
+といったインターフェースが全てのsourceにおいて、共通化されている。。
+
+[TIP]
+========
+.Unite + Grep
+unite grepという機能が標準でついているが、
+この機能が強力。検索プログラムは以下で紹介するag等の
+より高速なものに置き換えることができる。
+デフォルトで100件までしか表示しないが、
+Mキーを押すと、全ての検索結果を表示してくれる。
+Unite grepのプログラム置き換えは以下の設定参照。
+
+----
+" insert modeで開始
+let g:unite_enable_start_insert = 1
+
+" 大文字小文字を区別しない
+let g:unite_enable_ignore_case = 1
+let g:unite_enable_smart_case = 1
+
+" grep検索
+nnoremap <silent> ,g  :<C-u>Unite grep:. -buffer-name=search-buffer<CR>
+
+" カーソル位置の単語をgrep検索
+nnoremap <silent> ,cg :<C-u>Unite grep:. -buffer-name=search-buffer<CR><C-R><C-W>
+
+" grep検索結果の再呼出
+nnoremap <silent> ,r  :<C-u>UniteResume search-buffer<CR>
+
+" unite grep に ag(The Silver Searcher) を使う
+if executable('ag')
+  let g:unite_source_grep_command = 'ag'
+  let g:unite_source_grep_default_opts = '--nogroup --nocolor --column'
+  let g:unite_source_grep_recursive_opt = ''
+endif
+----
+========
+
+*'soramugi/auto-ctags.vim'*::
++
+----
+let g:auto_ctags = 1
+----
++
+上記設定をvimrcに書いておけば、ファイル保存時にtagsを生成してくれる。
+ただし、デフォルトで -R オプションがついているので、
+下層に大量のファイルがあるところでファイルを保存すると、
+裏で激しくctagsが動き続けてしまう。
+ただ、多重起動はしないようなので、使いどころ間違えなければ便利。
+たぶん、vimprocという非同期処理のプラグインがいる。
+
+*'vim-scripts/a.vim'*::
++
+----
+:AS
+----
++
+上記コマンドで同名のヘッダファイルを開いてくれる。
+逆も同じコマンドで可能。(ヘッダからソースを開く)
+
+*'ag.vim'*::
+ag(The silver searcher)のvimプラグイン
+agはホームあたりに.agignoreというファイルを作成し、そこに検索対象外のものを設定できるみたい。
+とりあえず設定例。lcov等を使ってhtml生成するなら*.htmlもあっていいかも
++
+----
+*~
+*.swp
+*.bak
+*.old
+tmp
+old
+.vim/bundle
+.vim/dict
+.git
+.svn
+zsh-completions
+lib
+libs
+jquery-*.js
+bootstrap*.css
+bootstrap*.js
+jquery.js
+node_modules
+*.egg
+*.egg-info
+----
+
+
+== 見た目系
+*'nathanaelkane/vim-indent-guides'*::
+
+
+インデントを視覚的に表示してくれる。
+
+*'vim-scripts/TagHighlight'*::
+
+
+クラス名や独自の変数型など、いろいろ色づけして表示してくれる。
+
+あって困ることはないので、いれておいたらいい。
+
+*'altercation/vim-colors-solarized.vim'*::
+
+*'unu/vim-modokai'*::
+
+*'godlygeek/csapprox'*::
+
+
+おすすめカラースキーマ。
+
+ただし、Terminalで使う場合、ほとんど動作しない。
+
+csapproxをGvimにインストールし、Gvimでカラースキームを選択し
+
+----
+:CSApproxSnapshot (カラースキームファイル名)
+----
+
+上記コマンドを実行し、できたカラースキームをインクルードして使えばよい
+
+*'aklt/plantuml-syntax'*::
+
+
+PlantUMLのシンタックスを認識し、色づけできる
+
+保存したときにUMLファイルを出力するには以下をvimrcに追加する
+
+----
+" Plantuml .pu拡張子のファイル保存時にコンパイル
+" plantuml.shは外部スクリプト
+autocmd BufWritePost,FileWritePost *.pu execute '!plantuml.sh %'
+----
+
+外部スクリプトは以下のものをパスが通るところに実行権を与えて置いておくこと
+
+----
+#/usr/bin/bash
+
+# plantuml.jarのパスは通しておくこと
+unix_full_path=`which plantuml.jar`
+java -jar `cygpath -w $unix_full_path` $1
+----
+
+
+
+*'visualmark.vim'*::
+
+
+行をハイライトし、移動できる。
+
+便利そうだがGvimじゃないと使えない？
+
+
+*'t9md/vim-quickhl'*::
+
+
+キーワードを複数ハイライトにできるが、使いどころよくわかってない
+
+*'vim-scripts/guicolorscheme.vim'*::
+
+
+GUI系のカラースキーマをTerminalでも使えるようなものに変換するものらしいがほとんど使えない
+
+
+
+
+*'osyo-manga/vim-over'*::
+
+
+置換コマンド入力中に、変換後の文字列がプレビューできる。
+
+:OverCommandLineというコマンド起動後に置換コマンドを入力するようで、
+
+起動がめんどくさい。見た目がかっこいいだけっぽい。使いどころいまいちわからず。
+
+https://github.com/osyo-manga/vim-over
+
+動きは上記リンクで確認できる。
+
+
+== プログラミング系
+
+*'scrooloose/syntastic'*::
+
+ただし、'設定ファイルでは、設定値のprefix_XX_は不要'といった罠があるので注意。
+
+規約は、homeディレクトリに.clang-formatというファイルを作成する。
+
+以下、設定例
+
+(Googleさんの規約に、関数ブロックの{}を改行して表示するようにしたもの)
+
+----
+BasedOnStyle:  Google
+BreakBeforeBraces: Linux
+----
+
+*'thinca/vim-quickrun'*::
+
+:QuickRunとタイプすると、スクリプトを実行し、その結果をウィンドウで開いてくれる。
+
+C言語等ではどうなるやら、試してない。
+
+単体テストに使えるかも。
+
+*'tomtom/tcomment_vim'*::
+
+いろんなプログラミング言語において、選択範囲のコメントアウトをトグルできる。
+
+visual modeでは範囲選択しgcとタイプすればトグルできる
+
+visual mode以外でもできるが、使い方把握していない
+
+詳細は下記リンク参照
+
+https://github.com/tomtom/tcomment_vim
+
+
+== キーマッピング系
+
+*'tpope/vim-unimpaired'*::
+
+[キーとの組み合わせでバッファの移動や、いろんなことができる。
+
+https://github.com/tpope/vim-unimpaired
+
+上記リンク参照。
+
+[<Space>, ]<Space>が便利かも。編集モードで空行を挿入できる。
+
+*'kana/vim-operator-user'*::
+
+なんかよくわからん
+
+vim組み込みのOperatorが拡張されるみたい
+
+http://kazuph.hateblo.jp/entry/2013/01/04/005030
+
+関係ないが、上は連続置換時に便利そう。
+
+OperatorとしてRを使うので、上書きモードをつぶしてしまうが、
+
+どうせ使わないので、問題なさそう。
+
+
+*'tpope/vim-pathogen.vim'*::
+
+*'Shougo/vimshell.vim'*::
+
+
+== その他
+
+*'kakkyz81/evervim'*::
+
+Evernoteが使える。
+
+EvernoteのDevelopper Tokenを発行し、
+
+vimrcに
+
+----
+let g:evervim_devtoken = '(トークン文字列)'
+----
+
+と書いておき、:EvernoteSetupコマンドを実行すれば、準備完了。
+
+その後:EvervimNotebookListといったコマンドでノートブック一覧が見れる。
+
+
+
+
+*'jacquesbh/vim-showmarks'*::
+
+*'kannokanno/previm'*::
+
+*'adinapoli/vim-markmultiple'*::
+
+*'dagwieers/asciidoc-vim'*::
+
+"ruby関連
+*'ngmy/vim-rubocop'*::
+
+
+*'ruby-matchit'*::
+
+*'tpope/vim-endwise.git'*::
+
+*'thinca/vim-ref'*::
+
+
+
