@@ -1,0 +1,83 @@
+
+GitHub memo
+===========
+:Author Initials:
+:toc:
+:icons:
+:numbered:
+:website: http://asciidoc.org/
+
+== リポジトリ作成
+
+----
+git init
+----
+
+カレントディレクトリ以下に.gitディレクトリが作成され、
+そこにリポジトリの情報が格納される。
+
+== ファイルの追加
+
+ステージ領域にファイルを追加するには、下記コマンドを実行
+
+----
+git add (ファイル名)
+----
+
+== ファイルのCommit(現在のローカルのブランチに対して)
+
+.ログメッセージをエディタで編集する場合
+----
+git commit
+----
+
+.ログメッセージを指定してCommitする場合
+----
+git commit -m "(ログメッセージ)"
+----
+
+== リモートリポジトリの登録
+
+----
+git remote add (リモートリポジトリ識別子) (GitHub上のURL)
+----
+
+例
+
+----
+git remote add github_dotfiles git@github.com:jumichi11/dotfiles
+----
+
+とすると、リモートリポジトリは +github_dotfiles+ という識別子でアクセスできるようになる。
+(以下のgit pushの例を参照)
+
+== リモートリポジトリへ送信
+
+----
+git push -u (リモートリポジトリ識別子) (リモートリポジトリのブランチ名)
+----
+
+例:git@github.com;jumichi11/dotfilesリポジトリのmasterブランチに送信する場合
+
+----
+git push -u github_dotfiles master
+----
+
+
+
+
+== CheatSheet
+
+http://powerman.name/doc/asciidoc[cheatsheet]
+
+image::./images/scilab_plot_exsample_original.png[image]
+
+.table1
+[cols="1,1,1",options="header",width="50%"]
+|==================================
+ |      | col1 | col1
+ | row1 | col1 | col2
+ | row2 | col1 | col2
+|==================================
+
+
