@@ -11,14 +11,20 @@ Junichi Kobayashi <junichi.kobayashi@pioneer.onkyo.com>
 
 == プラグイン管理
 *'Shougo/Neobundle'*::
-これがないと、インストール大変。
+これがないと、インストール大変。インストール方法は以下の通り。gitが必要。
+
+----
+mkdir ($VIMRUNTIMEのフォルダ)/bundle
+cd ($VIMRUNTIMEのフォルダ)/bundle
+git clone https://github.com/Shougo/neobundle.vim
+----
 
 *'Shougo/vimproc.vim'*::
 vimprocは非同期処理のプラグインで、あらかじめコンパイルしておく必要がある。
 +
 bundle内のvimproc.vimフォルダに入り、makeを実行
 +
-cygwinの場合は以下のとおり
+cygwinの場合は以下の通り。
 
 ----
 $ make -f make_cygwin.mak
@@ -404,6 +410,89 @@ let g:evervim_devtoken = '(トークン文字列)'
 *'tpope/vim-endwise.git'*::
 
 *'thinca/vim-ref'*::
+(作成中)
+
+== 文字コード、改行コードに関して
+
+文字コード設定(変換も含む)
+
+.UTF-8に設定する場合
+----
+:set fenc=utf-8
+----
+
+.CP932に設定する場合
+----
+:set fenc=cp932
+----
+
+改行コード設定(変換含む)
+
+.NLに設定
+----
+:set ff=unix
+----
+
+.CRNLに設定
+----
+:set ff=dos
+----
+
+設定を確認する場合は、
+
+----
+:set ff?
+----
+
+----
+:set fenc?
+----
+
+== 現在のバッファのファイルパス、ファイル名取得
+
+%::
+ファイル名(拡張子含む)
+
+%:r::
+ファイル名(拡張子含まない)
+
+%:p::
+ファイル名を含むパス
+
+%:p:h::
+ファイル名を含まないパス
+
+.応用例
+カレントディレクトリを現在のバッファのファイルの場所に変更する。
+
+----
+cd %:p:h
+----
 
 
+
+== ファイル保存時にコマンド実行
+autocmdを使えば、ファイル保存時、といったイベント発生時にEXコマンドを実行できる。
+
+(例).asciidocの拡張子を持つファイル保存時に、asciidocコマンド実行し、html文書変換する。
+
+----
+autocmd BufWritePost,FileWritePost *.asciidoc execute '!asciidoc -a icons -b xhtml11 %:p'
+----
+
+== 新規ファイル作成時にテンプレートを読み出す
+(例)_test.cという文字列を含むファイルを新規作成したときに、
+テストコードのテンプレート(testusutei)の内容をテンプレートとして読み出す
+
+----
+au BufNewFile *_test.c r $VIM/testsuite
+----
+
+== プラグインのリロード
+
+----
+:so %
+----
+
+%は現在のバッファのファイル名を表す。
 
