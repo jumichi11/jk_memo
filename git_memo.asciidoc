@@ -7,6 +7,15 @@ GitHub memo
 :numbered:
 :website: http://asciidoc.org/
 
+== 各種設定
+
+エディタの設定。aliasで呼び出す設定の場合NGなので、下記のように絶対バスを指定すること。
+
+----
+git config core.editor /usr/local/vim74/bin/vim.exe
+----
+
+
 == リポジトリ作成
 
 ----
