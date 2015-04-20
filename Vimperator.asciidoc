@@ -1,0 +1,52 @@
+
+Vimperator
+==========
+:Author Initials:
+:toc:
+:icons:
+:numbered:
+:website: http://asciidoc.org/
+== 設定をファイルに保存
+
+設定したファイルを保存するには、下記コマンドを実行。
+
+----
+:mkv!
+----
+== タブ移動時にnormalモードを維持する
+
+デフォルトだと、タブを連続で移動しているときにフォーカスが当たって、
+意図せず文字入力されてしまう問題を防止するため。
+
+----
+:set focuscontent
+----
+
+== プラグイン
+
+=== インストール方法
+
+下記フォルダに.jsファイルをコピーし、Firefoxを再起動。
+
+ /cygdrive/c/Users/teion_ga_hara_ni_hib/vimperator/plugin
+
+=== 各種プラグインについて
+
+*_smooziee.js*::
+	j,kキーによるスクロールが1行ごとの移動ではなく、Macのスライドパッドで操作したような動きになる。
+
+== _vimperatorrcの設定memo
+
+----
+map sn <C-n> <1>
+map sp <C-p> <2>
+noremap st <C-t><Esc>o <3>
+set focuscontent <4>
+----
+<1> 次のタブ移動
+<2> 前のタブ移動
+<3> タブを開くが、タブを開いた直後にアドレスバーにフォーカスが当たるのを防ぎ、かつ、自動でopenコマンドを実行する
+
+ファイルの場所
+ /cygdrive/c/Users/teion_ga_hara_ni_hib
+
