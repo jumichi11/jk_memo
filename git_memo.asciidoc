@@ -16,6 +16,20 @@ git config core.editor /usr/local/vim74/bin/vim.exe
 ----
 
 
+[WARNING]
+====
+
+Commitログメッセージの文字コードはUTF-8とすること。
+vimなら_vimrcに以下の設定を追加しておけばよい。
+
+----
+autocmd FileType gitcommit setlocal fenc=utf-8
+autocmd FileType gitcommit setlocal ff=unix
+----
+
+====
+
+
 == リポジトリ作成
 
 ----
@@ -41,6 +55,21 @@ git add (ファイル名)
 [NOTE]
 addはsvnにおけるaddとは異なる。commitに含めるファイルを指定する、という考え方。
 
+=== キャンセルするには
+
+ステージ領域に追加したことだけをキャンセル(つまりファイルは残る)する場合
+
+----
+git rm --cached (ファイル名)
+----
+
+ファイル削除も行いたい場合
+
+----
+git rm -f (ファイル名)
+----
+
+
 == ファイルのCommit(現在のブランチに対して)
 
 .ログメッセージをエディタで編集する場合
@@ -48,10 +77,17 @@ addはsvnにおけるaddとは異なる。commitに含めるファイルを指�
 git commit
 ----
 
+変更内容も確認しながらCommitしたい…
+
+----
+git commit -v
+----
+
 .ログメッセージを指定してCommitする場合
 ----
 git commit -m "(ログメッセージ)"
 ----
+
 
 == リモートリポジトリの登録
 
@@ -103,7 +139,30 @@ git push -u github_dotfiles master
 [NOTE]
 push前には、一度pullをしておく。
 
+== コンフリクトの解消
 
+コンフリクトが発生すると、下記のようなメッセージが出力される。
+
+----
+$ git pull
+Auto-merging _vimrc
+CONFLICT (content): Merge conflict in _vimrc
+Automatic merge failed; fix conflicts and then commit the result.
+----
+
+解消する手順は以下の通り。
+
+. コンフリクトが発生したファイルを開く
+. コンフリクト発生箇所が以下のように表示されるので、取り込まない方を削除する。
++
+----
+<<<<<<< HEAD
+commit インデックスの状態を記録する
+=======
+pull リモートリポジトリの内容を取得する
+>>>>>>> issue3
+----
+. この状態で一度git addして、git commitを行う。
 
 
 == CheatSheet
