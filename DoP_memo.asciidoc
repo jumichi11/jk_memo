@@ -1,0 +1,48 @@
+
+DoP(DSD Audio over PCM Frames)
+==============================
+:Author Initials:
+:toc:
+:icons:
+:numbered:
+:website: http://asciidoc.org/
+
+== DoPとは?
+
+USBの規格には +raw_data+ と呼ばれるPCM audio以外のフォーマットが用意されているが、
+OS X/Apple OS/Windowsなど、対応している環境が少なく、PCM audio以外のフォーマットが転送できない。
+
+この問題を回避するために、PCM audioのフォーマットにDSD audioの信号(with マーカー)を載せて転送しよう、というもの。
+
+http://www.positive-feedback.com/Issue60/dsd_usb.htm[DoP open Standard: Method for transferring DSD Audio over PCM Frames Version 1.1]
+
+== DoPのフォーマット
+
+176.4kHz * 16bit = 2.8224Mbit/sであるので、PCMとしての転送レートは16bit/176,kHzあればよいが、
+DSD/PCMを区別するためのマーカーがいる。
+
+これは2値を区別できればよいので、1bitで良いが、8bit分をとるようにしており、
+これにより、DoPフォーマットの転送レートは
+
+ 24bit/176.4kHz
+
+と定められている。
+
+== なぜマーカーに8bti分も取るのか？
+
+DSDのマーカーは、64FS DSDに関しては、
++0x05+ と +0xFA+ がFrame毎に交互となるように定められている。
+
+image::./images/DoP_format.png[DoP_format]
+
+これにより、もし、マーカーが検出できない場合でも、+と-のサンプル値が88.2kHzという人間の可聴域を超えた周波数で再生されるため、
+(さらにいうと、Levelもある程度抑えられる)
+誤検出時のノイズの影響を抑えることができる。
+
+////////
+== CheatSheet
+
+http://powerman.name/doc/asciidoc[cheatsheet]
+
+////////
+
