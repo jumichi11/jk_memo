@@ -6,6 +6,7 @@ Vimperator
 :icons:
 :numbered:
 :website: http://asciidoc.org/
+
 == 設定をファイルに保存
 
 設定したファイルを保存するには、下記コマンドを実行。
@@ -43,9 +44,11 @@ map sp <C-p> <2>
 noremap st <C-t><Esc>o <3>
 set focuscontent <4>
 ----
+
 <1> 次のタブ移動
 <2> 前のタブ移動
 <3> タブを開くが、タブを開いた直後にアドレスバーにフォーカスが当たるのを防ぎ、かつ、自動でopenコマンドを実行する
+<4> タブ移動時にテキストボックス等にフォーカスを当てない
 
 ファイルの場所
  /cygdrive/c/Users/teion_ga_hara_ni_hib

@@ -164,6 +164,44 @@ pull リモートリポジトリの内容を取得する
 ----
 . この状態で一度git addして、git commitを行う。
 
+== リビジョンを戻す
+
+リビジョンを戻すには、以下のようなコマンドを実行する。
+
+----
+git checkout (リポジトリのハッシュ名)
+----
+
+現在のブランチの最新から、相対的に戻りたいときは、以下のようなコマンドを実行する。
+(下記の例は、最新から3つ前に戻る場合)
+
+----
+git checkout HEAD~3
+----
+
+または
+
+----
+git checkout HEAD~~~
+----
+
+[WARNING]
+====
+リポジトリを最新に戻す場合(HEADが移動することと同じ意味)、下記コマンドでブランチの最新に戻すこと。
+
+----
+git checkout (ブランチ名)
+----
+
+====
+
+== Git学習サイト
+
+Gitの各種ブランチ操作コマンドがどのように動作するのかをグラフィカルに確認することができる。
+
+http://k.swd.cc/learnGitBranching-ja/?NODEMO[Learning Git Branching]
+
+////
 
 == CheatSheet
 
@@ -182,4 +220,5 @@ image::./images/scilab_plot_exsample_original.png[image]
 == teststest
 sjdkfasdjfksjfk
 
+////
 
