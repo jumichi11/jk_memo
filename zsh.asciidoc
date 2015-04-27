@@ -1,0 +1,97 @@
+
+about zsh
+=========
+:Author Initials:
+:toc:
+:icons:
+:numbered:
+:website: http://asciidoc.org/
+
+== インストール
+
+cygwinで使うこと前提。
+
+ソースをダウンロード
+
+http://sourceforge.net/projects/zsh/files/zsh/5.0.7/zsh-5.0.7.tar.gz/download[zshソースコード]
+
+下記コマンド実行
+
+----
+./configure　--enable-multibyte
+make
+make install
+----
+
+/usr/local/bin/zsh.exeにインストールされる。
+
+== 設定
+
+=== cygwinの起動シェルをzshにする
+
++/etc/passwd+ を開き、 +/usr/bin/bash+ となっている箇所を +/usr/local/bin/zsh+ に置換する。
+
+=== zshの設定
++~/.zshrc+ に設定を記述する。
+
+----
+brew install ruby
+----
+
+== bashにない機能
+
+コマンド補完だけでなく、オプションの補完も行えるようにできる。
+
+----
+autoload -Uz compinit
+compinit
+----
+
+----
+## ディレクトリ名だけで cd
+setopt auto_cd
+----
+
+----
+/home/teion_ga_hara_ni_hib% zsh <1>
+zsh                   zsh.exe               zsh_scheduled_events  zsh-5.0.7             zsh-5.0.7.exe <2>
+----
+<1> ここでTabを押す
+<2> 補完リストが下に出る。これを見ながらタイプすることもできるし、この状態でさらにTabを押すと、カーソル選択もできる。
+
+----
+## cd 時に自動で push
+setopt autopushd
+----
+
+PROMPTは通常のプロンプト、PROMPT2はforやwhile/複数行入力時などに表示されるプロンプト、SPROMPTは入力ミスを確認する場合に表示されるプロンプトだ。 
+
+----
+PROMPT="%/%% "
+PROMPT2="%_%% "
+SPROMPT="%r is correct? [n,y,a,e]: "
+----
+
+
+////
+== Level1-3
+
+Level1-3
+
+image::./images/scilab_plot_exsample_original.png[image]
+
+
+== CheatSheet
+
+http://powerman.name/doc/asciidoc[cheatsheet]
+
+.table1
+[cols="1,1,1",options="header",width="50%"]
+|==================================
+ |      | col1 | col1
+ | row1 | col1 | col2
+ | row2 | col1 | col2
+|==================================
+
+////
+

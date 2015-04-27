@@ -33,8 +33,19 @@ Vimperator
 
 === 各種プラグインについて
 
+*_libly.js*::
+	ライブラリ。このライブラリに依存しているプラグインもあるようなので、とりあえず入れておく。
+
 *_smooziee.js*::
 	j,kキーによるスクロールが1行ごとの移動ではなく、Macのスライドパッドで操作したような動きになる。
+
+*multi_requester.js*::
+	mr (サービス名 ) xxxで、辞書検索や2ch 検索や、いろいろなものを検索できる。
+	結果はvimperatorのバッファに出力される。
+
+*walk_input.js*::
+	Alt + i キーで、ページ内のフォーカスを移動できる。TABキーみたいな動作。
+
 
 == _vimperatorrcの設定memo
 
@@ -52,4 +63,16 @@ set focuscontent <4>
 
 ファイルの場所
  /cygdrive/c/Users/teion_ga_hara_ni_hib
+
+== 特定のドメインでキーを無効にする
+
+手打ちする場合、http://を除いた部分を記述する。
+ignorekeys add とタイプした時点で、現在開いているページのドメインをTab補完可能。
+サイト特有のキーショートカット等を使いたい場合などに設定するとよい。
+
+入力例は以下の通り。
+
+----
+ignorekeys add reader\\.livedoor\\.com
+----
 
