@@ -1,0 +1,163 @@
+MacでUnix
+=========
+Junichi Kobayashi <junichi.kobayashi@pioneer.onkyo.com>
+:Author Initials:
+:toc:
+:icons:
+:numbered:
+:website: http://asciidoc.org/
+
+
+== Unix系の設定
+
+=== gccインストール
+
+. Xcodeをインストール
+. Xcode > Open Developper Menu > More Developper Tools...
+. Apple Developperでログイン(事前登録必要)
+. Command Line Toolsをダウンロード。OSのVersionに対応したものをインストールすること。(Ver.10.8.5ならOS X MountainLion)
+. 完了
+
+=== rubyインストール
+
+----
+brew install ruby
+----
+
+
+----
+echo 'export PATH=/usr/local/bin:$PATH' >> ~/.bash_profile
+source ~/.bash_profile
+----
+
+=== Homebrewをインストール(Update?)
+
+ターミナルで下記コマンドを実行
+
+----
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+----
+
+=== fontforgeをインストール
+
+フォントの編集ツール。
+
+----
+brew install fontforge
+----
+
+=== brewでエラーが出たら
+下記のようなエラーが出る場合がある。
+
+----
+cairo: XQuartz is required to install this formula.
+You can install with Homebrew Cask:
+  brew install Caskroom/cask/xquartz
+
+You can download from:
+  https://xquartz.macosforge.org
+pango: XQuartz is required to install this formula.
+You can install with Homebrew Cask:
+  brew install Caskroom/cask/xquartz
+
+You can download from:
+  https://xquartz.macosforge.org
+Error: Unsatisified requirements failed this build.
+----
+
+その場合、以下のコマンドを実行
+
+----
+brew install Caskroom/cask/xquartz
+----
+
+=== Vim7.4インストール(Terminal版)
+
+MacPortsがインストールされている場合、アンインストールが必要。手順は以下の通り。
+
+----
+sudo port -fp uninstall --follow-dependents installed
+...(処理待ち)
+sudo rm -rf \
+   /opt/local \
+   /Applications/DarwinPorts \
+   /Applications/MacPorts \
+   /Library/LaunchDaemons/org.macports.* \
+   /Library/Receipts/DarwinPorts*.pkg \
+   /Library/Receipts/MacPorts*.pkg \
+   /Library/StartupItems/DarwinPortsStartup \
+   /Library/Tcl/darwinports1.0 \
+   /Library/Tcl/macports1.0 \
+   ~/.macports
+----
+
+また、以下のようなメッセージが出ることがあるが、
+
+----
+==> make
+      _error_print in if_ruby.o
+ld: symbol(s) not found for architecture x86_64
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+make[1]: *** [vim] Error 1
+make: *** [first] Error 2
+Warning: It appears you have MacPorts or Fink installed.
+Software installed with other package managers causes known problems for
+Homebrew. If a formula fails to build, uninstall MacPorts/Fink and try again.
+
+READ THIS: https://git.io/brew-troubleshooting
+
+These open issues may also help:
+vim  7.4.488 build fails if Homebrew ruby is installed but /usr/bin/ruby comes first in PATH (https://github.com/Homebrew/homebrew/issues/33705)j
+----
+
+その場合は、以下のコマンドを実行し、再度インストールを行う。
+(多分、プリインストールのrubyのパスが通っており、
+前述のbrewでインストールしたrubyが実行されないことが原因のよう)
+
+----
+echo 'export PATH=/usr/local/bin:$PATH' >> ~/.bash_profile
+source ~/.bash_profile
+----
+
+
+== MacのUIに関する設定
+
+=== capsキーをCtrlキーにする
+
+. システム環境設定 > キーボード > 修飾キー
+. Caps LockキーをControlにする
+
+=== キーリピート速度を速くする
+
+. KeyRemap4MacBookというソフトがあるのでAppStoreからインストール
+. ソフト起動
+. Key Repeatタブを開き、Basic Configuration > Key Repeatで変更
+
+=== TerminalでMouseを使えるようにするには
+
+. 下記URLからzipファイルをダウンロードし、展開
++
+http://github.com/norio-nomura/EasySIMBL/releases/download/EasySIMBL-1.7.1/EasySIMBL-1.7.1.zip[EasySIMBL]
+
+. appファイルを~/Applicationにコピー(Finderでアプリケーションフォルダに移動してもよい)
+
+. EasySIMBL.appを起動
+
+. Use SIMBLにチェックを入れる
+
+. 下記URLからzipファイルをダウンロードし、展開
++
+http://bitheap.org/mouseterm/MouseTerm.dmg[MouseTerm]
+
+. 展開したファイルの.bundleファイルを、EasySIMBLにドラッグ&ドロップ
+
+. Terminal > シェル にSend Mouse Eventsが追加されるので、チェックを入れる
+
+. vimrcに下記設定を記述
++
+----
+set mouse=a
+set ttymouse=xterm2
+----
+
+
