@@ -209,6 +209,14 @@ Gitの各種ブランチ操作コマンドがどのように動作するのか�
 
 http://k.swd.cc/learnGitBranching-ja/?NODEMO[Learning Git Branching]
 
+== エラーが出た場合
+
+Please tell me who you are といったエラーの場合
+
+----
+git config --global user.name "jumichi11"
+git config --global user.email "teion_ga_hara_ni_hibiku_ze@yaoo.co.jp"
+----
 ////
 
 == CheatSheet
