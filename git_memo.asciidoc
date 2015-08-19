@@ -217,6 +217,35 @@ Please tell me who you are といったエラーの場合
 git config --global user.name "jumichi11"
 git config --global user.email "teion_ga_hara_ni_hibiku_ze@yaoo.co.jp"
 ----
+
+上記はgithubのユーザー名とメールアドレスを想定。ローカルで管理するなら、何でもいいのかも。
+
+push時に以下のようなメッセージが出る場合
+
+----
+Warning: Permanently added the RSA host key for IP address '192.30.252.131' to the list of known hosts.
+Permission denied (publickey).
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+----
+
+ssh認証時のローカルの秘密鍵と、githubに登録する公開鍵が設定できていない可能性があるので、
+
+----
+cd ~/.ssh
+ssh-keygen -t rsa -C "teion_ga_hara_ni_hibiku_ze@yahoo.co.jp"
+ssh-add ~/.ssh/github_id_rsa
+(ここでエラーが出る場合は、eval `ssh-agent`を実行する)
+cat ~/.ssh/github_id_rsa.pub (github_id_rsaはssh-keygenコマンド実行時に指定した鍵のID名)
+----
+
+最後のcatで出力された内容を、githubで登録
+
+github上では、Settings > SSH keys > Add SSH key で、公開鍵を登録する。
+
+
 ////
 
 == CheatSheet
